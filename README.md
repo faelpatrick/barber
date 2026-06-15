@@ -42,8 +42,9 @@ public/
 - Sem base de dados
 - Sem autenticação real
 - `vite.config.js` usa `base: "/"` para o subdomínio
-- `public/.htaccess` já prepara o deploy para SPA na Hostinger
-- O branch `main` fica com o código-fonte e o workflow `.github/workflows/hostinger-deploy.yml` publica apenas a `dist` no branch `hostinger-dist`
+- `dist/` é a saída final do Vite
+- `.htaccess` na raiz do repositório faz a Hostinger servir o conteúdo compilado de `dist/`
+- `public/.htaccess` continua a ser copiado para `dist/` e garante o fallback de SPA dentro da build
 
 ## Validação após deploy
 
@@ -51,12 +52,14 @@ public/
 - O layout funciona bem em telemóvel
 - Os botões fazem scroll para as secções certas
 - A secção de serviços aparece com os preços corretos
+- `https://barber.faelpatrick.com/src/main.js` deve deixar de abrir
+- `https://barber.faelpatrick.com/favicon.svg` deve funcionar sem usar `/public/`
 
 ## Deploy na Hostinger
 
-1. Mantém o repositório principal na branch `main`.
-2. Faz push normalmente para `main`.
-3. O GitHub Actions gera a `dist` e atualiza a branch `hostinger-dist`.
-4. Na Hostinger, configura o Git deployment para publicar a branch `hostinger-dist` em vez da `main`.
+1. Corre `npm run build` antes do commit final da etapa.
+2. Faz push normal para `main`.
+3. A Hostinger pode continuar a publicar a raiz do repositório.
+4. O `.htaccess` da raiz redireciona o domínio para a build dentro de `dist/`.
 
-Assim a Hostinger recebe apenas os ficheiros finais do Vite e deixa de servir `/src/main.js`.
+Assim o domínio deixa de servir `src/main.js` e passa a servir a app compilada.

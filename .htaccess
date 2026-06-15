@@ -1,0 +1,18 @@
+RewriteEngine On
+
+# Mantem desafios de SSL e acessos diretos ao dist funcionais
+RewriteRule ^\.well-known/ - [L]
+RewriteRule ^dist/ - [L]
+
+# Evita expor o codigo fonte e ficheiros de projeto no dominio publico
+RewriteRule ^(?:src|public|node_modules|\.github)/ - [F,L,NC]
+RewriteRule ^(?:package(?:-lock)?\.json|vite\.config\.js|README\.md)$ - [F,L,NC]
+
+# Se o ficheiro pedido existir dentro de dist, serve-o a partir de la
+RewriteCond %{DOCUMENT_ROOT}/dist/$1 -f [OR]
+RewriteCond %{DOCUMENT_ROOT}/dist/$1 -d
+RewriteRule ^(.+)$ dist/$1 [L]
+
+# Entrega sempre a app compilada para a raiz e para futuras rotas SPA
+RewriteRule ^$ dist/index.html [L]
+RewriteRule ^.*$ dist/index.html [L]
