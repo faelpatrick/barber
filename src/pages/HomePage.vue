@@ -1,4 +1,5 @@
 <script setup>
+import guilhermePhoto from '../assets/guilherme.jpg'
 import ServiceCard from '../components/ServiceCard.vue'
 import { services } from '../data/services'
 
@@ -38,11 +39,29 @@ const futureCards = [
             </div>
           </div>
 
-          <v-sheet class="qr-panel pa-5 pa-sm-6" rounded="xl">
-            <div class="qr-placeholder">QR</div>
-            <p class="qr-title">QR Code em breve</p>
-            <p class="qr-text">Aqui ficará o acesso rápido para clientes entrarem na app no salão.</p>
-          </v-sheet>
+          <div class="hero-side">
+            <v-sheet class="profile-card" rounded="xl">
+              <img
+                :src="guilhermePhoto"
+                alt="Guilherme Araujo"
+                class="profile-image"
+              >
+
+              <div class="profile-copy pa-5">
+                <p class="profile-kicker">Barbeiro em destaque</p>
+                <p class="profile-name">Guilherme Araujo</p>
+                <p class="profile-text">
+                  O primeiro rosto do MVP já aparece aqui como referência para os testes e para a identidade da barbearia.
+                </p>
+              </div>
+            </v-sheet>
+
+            <v-sheet class="qr-panel pa-5 pa-sm-6" rounded="xl">
+              <div class="qr-placeholder">QR</div>
+              <p class="qr-title">QR Code em breve</p>
+              <p class="qr-text">Aqui ficará o acesso rápido para clientes entrarem na app no salão.</p>
+            </v-sheet>
+          </div>
         </div>
       </v-sheet>
 
@@ -87,7 +106,7 @@ const futureCards = [
       </section>
     </v-container>
 
-    <footer class="footer">© Guilherme Barbershop</footer>
+    <footer class="footer">&copy; Guilherme Barbershop</footer>
   </section>
 </template>
 
@@ -107,6 +126,11 @@ const futureCards = [
 .hero-grid {
   display: grid;
   gap: 1.5rem;
+}
+
+.hero-side {
+  display: grid;
+  gap: 1rem;
 }
 
 .eyebrow {
@@ -147,15 +171,57 @@ const futureCards = [
   font-weight: 700;
 }
 
+.profile-card,
 .qr-panel,
 .feature-card {
   background: rgba(8, 8, 8, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.profile-card {
+  overflow: hidden;
+}
+
+.profile-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center;
+}
+
+.profile-copy {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.profile-kicker {
+  margin: 0;
+  color: #b3b3b3;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.profile-name {
+  margin: 0;
+  font-family: "Palatino Linotype", "Book Antiqua", serif;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.profile-text,
+.qr-text,
+.feature-text,
+.section-text {
+  margin: 0;
+  color: #bdbdbd;
+  line-height: 1.6;
+}
+
 .qr-panel {
   display: flex;
-  min-height: 100%;
   flex-direction: column;
   justify-content: center;
   gap: 0.75rem;
@@ -181,14 +247,6 @@ const futureCards = [
   font-weight: 700;
 }
 
-.qr-text,
-.feature-text,
-.section-text {
-  margin: 0;
-  color: #bdbdbd;
-  line-height: 1.6;
-}
-
 .services-section {
   margin-top: 2rem;
 }
@@ -211,8 +269,8 @@ const futureCards = [
 
 @media (min-width: 960px) {
   .hero-grid {
-    grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.85fr);
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+    align-items: start;
   }
 
   .section-header {
