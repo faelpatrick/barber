@@ -5,15 +5,18 @@ import {
   VBtn,
   VCard,
   VCardText,
+  VCheckbox,
   VCol,
   VContainer,
   VMain,
   VRow,
   VSheet,
+  VTextField,
 } from 'vuetify/components'
 import { Ripple } from 'vuetify/directives'
 import 'vuetify/styles'
 import App from './App.vue'
+import router from './router'
 import './assets/main.css'
 
 const vuetify = createVuetify({
@@ -22,11 +25,13 @@ const vuetify = createVuetify({
     VBtn,
     VCard,
     VCardText,
+    VCheckbox,
     VCol,
     VContainer,
     VMain,
     VRow,
     VSheet,
+    VTextField,
   },
   directives: {
     Ripple,
@@ -59,4 +64,4 @@ const vuetify = createVuetify({
   },
 })
 
-createApp(App).use(vuetify).mount('#app')
+createApp(App).use(router).use(vuetify).mount('#app')

@@ -1,10 +1,10 @@
 <script setup>
+import { RouterView } from 'vue-router'
 import DefaultLayout from './layouts/DefaultLayout.vue'
-import HomePage from './pages/HomePage.vue'
 </script>
 
 <template>
   <DefaultLayout>
-    <HomePage />
+    <RouterView />
   </DefaultLayout>
 </template>
