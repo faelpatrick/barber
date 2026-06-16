@@ -8,7 +8,7 @@ import healthRoutes from './routes/health.routes.js'
 dotenv.config()
 
 const app = express()
-const port = Number(process.env.PORT || 3001)
+const port = Number(process.env.PORT || 3000)
 
 const corsOriginValue = process.env.CORS_ORIGIN?.trim()
 const corsOrigins = corsOriginValue
