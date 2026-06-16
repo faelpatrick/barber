@@ -1,15 +1,13 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {
-  matchesUserCredentials,
-  saveUser,
-  setAuthenticated,
-} from '../utils/auth'
+import { loginUser, registerUser } from '../services/api'
+import { saveCurrentUser, setAuthenticated } from '../utils/auth'
 
 const router = useRouter()
 const mode = ref('login')
 const generalError = ref('')
+const isSubmitting = ref(false)
 
 const loginForm = ref({
   phone: '',
@@ -106,42 +104,59 @@ const validateRegister = () => {
   )
 }
 
-const handleLogin = () => {
+const completeSession = (user) => {
+  saveCurrentUser(user)
+  setAuthenticated()
+  router.push('/agendamento')
+}
+
+const handleLogin = async () => {
   clearMessages()
 
   if (!validateLogin()) {
     return
   }
 
-  const hasMatchingUser = matchesUserCredentials({
-    phone: loginForm.value.phone,
-    birthDate: loginForm.value.birthDate,
-  })
+  isSubmitting.value = true
 
-  if (!hasMatchingUser) {
-    generalError.value = 'Dados nao encontrados. Verifique o telefone ou crie uma conta.'
-    return
+  try {
+    const { client } = await loginUser({
+      phone: loginForm.value.phone,
+      birthDate: loginForm.value.birthDate,
+    })
+
+    completeSession(client)
+  } catch (error) {
+    generalError.value =
+      error.message || 'Dados nao encontrados. Verifique o telefone ou crie uma conta.'
+  } finally {
+    isSubmitting.value = false
   }
-
-  setAuthenticated()
-  router.push('/agendamento')
 }
 
-const handleRegister = () => {
+const handleRegister = async () => {
   clearMessages()
 
   if (!validateRegister()) {
     return
   }
 
-  saveUser({
-    fullName: registerForm.value.fullName,
-    phone: registerForm.value.phone,
-    birthDate: registerForm.value.birthDate,
-  })
+  isSubmitting.value = true
 
-  setAuthenticated()
-  router.push('/agendamento')
+  try {
+    const { client } = await registerUser({
+      fullName: registerForm.value.fullName,
+      phone: registerForm.value.phone,
+      birthDate: registerForm.value.birthDate,
+      acceptedPrivacy: registerForm.value.acceptedPrivacy,
+    })
+
+    completeSession(client)
+  } catch (error) {
+    generalError.value = error.message || 'Nao foi possivel criar a conta. Tente novamente.'
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
 
@@ -159,6 +174,7 @@ const handleRegister = () => {
             :variant="isLoginMode ? 'flat' : 'outlined'"
             color="primary"
             type="button"
+            :disabled="isSubmitting"
             @click="switchMode('login')"
           >
             Entrar
@@ -167,11 +183,16 @@ const handleRegister = () => {
             :variant="isLoginMode ? 'outlined' : 'flat'"
             color="primary"
             type="button"
+            :disabled="isSubmitting"
             @click="switchMode('register')"
           >
             Criar conta
           </v-btn>
         </div>
+
+        <p v-if="generalError" class="form-feedback form-feedback--error">
+          {{ generalError }}
+        </p>
 
         <form
           v-if="isLoginMode"
@@ -196,11 +217,7 @@ const handleRegister = () => {
             :error-messages="loginErrors.birthDate"
           />
 
-          <p v-if="generalError" class="form-feedback form-feedback--error">
-            {{ generalError }}
-          </p>
-
-          <v-btn color="primary" size="large" type="submit">
+          <v-btn color="primary" size="large" type="submit" :loading="isSubmitting">
             Continuar
           </v-btn>
         </form>
@@ -235,26 +252,26 @@ const handleRegister = () => {
             type="date"
             :error-messages="registerErrors.birthDate"
           />
-          
+
           <label class="privacy-check">
-  <input
-    v-model="registerForm.acceptedPrivacy"
-    type="checkbox"
-  >
-  <span class="privacy-box">
-    <span v-if="registerForm.acceptedPrivacy">✓</span>
-  </span>
-  <span>Aceito a Política de Privacidade</span>
-</label>
+            <input
+              v-model="registerForm.acceptedPrivacy"
+              type="checkbox"
+            >
+            <span class="privacy-box">
+              <span v-if="registerForm.acceptedPrivacy">x</span>
+            </span>
+            <span>Aceito a Politica de Privacidade</span>
+          </label>
 
-<p
-  v-if="registerErrors.acceptedPrivacy"
-  class="form-feedback form-feedback--error"
->
-  {{ registerErrors.acceptedPrivacy }}
-</p>
+          <p
+            v-if="registerErrors.acceptedPrivacy"
+            class="form-feedback form-feedback--error"
+          >
+            {{ registerErrors.acceptedPrivacy }}
+          </p>
 
-          <v-btn color="primary" size="large" type="submit">
+          <v-btn color="primary" size="large" type="submit" :loading="isSubmitting">
             Criar conta
           </v-btn>
         </form>
@@ -345,10 +362,11 @@ const handleRegister = () => {
   flex: 0 0 26px;
   border: 2px solid #fff;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1;
   color: #000;
   background: transparent;
+  text-transform: uppercase;
 }
 
 .privacy-check input:checked + .privacy-box {

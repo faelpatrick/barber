@@ -3,6 +3,7 @@ RewriteEngine On
 # Mantem desafios de SSL e acessos diretos ao dist funcionais
 RewriteRule ^\.well-known/ - [L]
 RewriteRule ^dist/ - [L]
+RewriteRule ^api/ - [L]
 
 # Evita expor o codigo fonte e ficheiros de projeto no dominio publico
 RewriteRule ^(?:src|public|node_modules|\.github)/ - [F,L,NC]
