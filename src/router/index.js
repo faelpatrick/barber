@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import BookingPage from '../pages/BookingPage.vue'
-import LandingPage from '../pages/LandingPage.vue'
+import HomePage from '../pages/HomePage.vue'
 import LoginPage from '../pages/LoginPage.vue'
 import { isAuthenticated } from '../utils/auth'
 
@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'landing',
-    component: LandingPage,
+    component: HomePage,
   },
   {
     path: '/app',

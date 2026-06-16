@@ -32,3 +32,7 @@ export const loginUser = (data) =>
     method: 'POST',
     body: JSON.stringify(data),
   })
+
+export const getApiHealth = () => request('/health')
+
+export const getDatabaseStatus = () => request('/db-test')

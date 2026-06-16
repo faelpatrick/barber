@@ -2,6 +2,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import authRoutes from './routes/auth.routes.js'
+import dbTestRoutes from './routes/db-test.routes.js'
 import healthRoutes from './routes/health.routes.js'
 
 dotenv.config()
@@ -26,6 +27,7 @@ app.use(
 app.use(express.json())
 
 app.use('/api/health', healthRoutes)
+app.use('/api/db-test', dbTestRoutes)
 app.use('/api/auth', authRoutes)
 
 app.use((error, _request, response, _next) => {

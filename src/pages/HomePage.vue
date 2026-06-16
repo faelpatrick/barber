@@ -1,4 +1,5 @@
 <script setup>
+import SystemStatus from '../components/SystemStatus.vue'
 import logoBarbearia from '../assets/logo-barbearia.png'
 </script>
 
@@ -32,6 +33,10 @@ import logoBarbearia from '../assets/logo-barbearia.png'
         </v-sheet>
       </v-sheet>
     </v-container>
+
+    <div class="landing-status">
+      <SystemStatus />
+    </div>
 
     <footer class="landing-footer">&copy; Guilherme Barbershop</footer>
   </section>
@@ -123,8 +128,12 @@ import logoBarbearia from '../assets/logo-barbearia.png'
   line-height: 1.5;
 }
 
+.landing-status {
+  padding: 0 1.5rem;
+}
+
 .landing-footer {
-  padding: 0 1.5rem 1.75rem;
+  padding: 0.85rem 1.5rem 1.75rem;
   color: #888;
   text-align: center;
 }
