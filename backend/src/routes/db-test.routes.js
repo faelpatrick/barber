@@ -11,12 +11,10 @@ router.get('/', async (_request, response) => {
       success: true,
       database: 'connected',
     })
-  } catch (error) {
+  } catch {
     response.status(500).json({
       success: false,
       database: 'error',
-      message: error.message,
-      code: error.code,
     })
   }
 })
