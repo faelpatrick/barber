@@ -11,7 +11,7 @@ router.get('/', async (_request, response) => {
       success: true,
       database: 'connected',
     })
-  } catch {
+  } catch (error) {
     response.status(500).json({
       success: false,
       database: 'error',
