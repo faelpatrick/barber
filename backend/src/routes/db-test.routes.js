@@ -15,6 +15,8 @@ router.get('/', async (_request, response) => {
     response.status(500).json({
       success: false,
       database: 'error',
+      message: error.message,
+      code: error.code,
     })
   }
 })
