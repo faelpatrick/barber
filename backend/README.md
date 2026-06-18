@@ -59,6 +59,7 @@ Por omissao, a API fica disponivel em:
 ## Endpoints disponiveis
 
 - `GET /api/health`
+- `GET /api/env-check`
 - `GET /api/db-test`
 - `POST /api/auth/register`
 - `POST /api/auth/login`
